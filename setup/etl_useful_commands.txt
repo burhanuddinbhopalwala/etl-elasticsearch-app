@@ -1,0 +1,67 @@
+1: For mySQL:
+SET  FOREIGN_KEY_CHECKS=0; 
+SET GLOBAL FOREIGN_KEY_CHECKS=0;
+ALTER TABLE <table_name> DISABLE KEYS;
+- https://tableplus.io/blog/2018/08/mysql-how-to-drop-constraint-in-mysql.html
+- https://www.dbrnd.com/2017/02/postgresql-how-to-disable-or-enable-foreign-key-constraint-of-a-table-data-migration-bulk-operation/
+#########################################################
+
+2: Ubuntu commands: 
+  2.1: ps -aux | grep "[.]rb" | awk '{print $2}' | xargs -rn 1 kill -9
+  2.2: sudo netstat -altunp | grep <service_name_if_any_or_:port#> # For finding the busy ports etc.
+  # -a: all, -l: LISTENING,, -t: TCP, -u: UDP, -n: NUMERIC (IP, PORT, USER NAMES), -p: PROCESS_ID 
+#########################################################
+
+3: Docker etl commands:
+  3.1: sudo docker-compose logs -f --tail=200 kafka-connect
+  3.2: sudo docker exec -it kafka /bin/bash bin/kafka-topics.sh --list --zookeeper zookeeper:2181
+  3.3: sudo docker exec -it kafka /bin/bash bin/kafka-consumer-groups.sh --list --bootstrap-server kafka:9092
+  3.4: sudo docker exec -it kafka /bin/bash bin/kafka-consumer-groups.sh --group  group_es_consigner_trips  --describe --bootstrap-server kafka:9092
+#########################################################
+
+4: -- mySQL User creations / Data Control Language (DCL) commands:
+DROP USER "kafka_connect"@"%";
+CREATE USER "kafka_connect"@"%" IDENTIFIED BY "debezium_etl";
+GRANT ALL PRIVILEGES ON *.* TO "kafka_connect"@"%";
+FLUSH PRIVILEGES; -- MUST COMMAND AFTER GRANT/ REVOKE
+SELECT user, host, authentication_string FROM mysql.user;
+REVOKE ALL PRIVILEGES ON <db_name>.* FROM "kafka_connect"@"%";
+/*
+  POSSIBLE MOST USEFUL PRIVILEGES: 
+    ALL PRIVILEGES- Allows global access
+    CREATE- Allows them to create new tables or databases
+    ALTER- Allows them to alter tables
+    DROP- Allows them to them to delete tables or databases
+    SELECT- Allows read only user
+    INSERT- Allows them to insert rows into tables
+    UPDATE- Allow them to update table rows
+    DELETE- Allows them to delete rows from tables
+    GRANT OPTION- Allows them to grant or remove other users privileges
+*/
+
+-- Documentation/ References:
+https://en.wikipedia.org/wiki/Data_control_language
+https://dev.mysql.com/doc/refman/8.0/en/grant.html
+https://dev.mysql.com/doc/refman/8.0/en/revoke.html
+#########################################################
+
+5: -- MySQL dump and restore
+- dump: mysqldump --no-data -h 35.154.141.143 -u kafka_connect -p dipper_development users shippers consigners trucks truckers drivers consigner_trips route_pois poi_configs trip_configs alert_subscriptions default_poi_configs > schema.sql
+- restore: mysqldump -h 35.154.141.143 -u kafka_connect -p dipper_development users shippers consigners trucks truckers drivers consigner_trips route_pois poi_configs trip_configs alert_subscriptions default_poi_configs > data.sql
+#########################################################
+
+6: PostgreSQL dump and restore
+- dump: pg_dump --schema-only -h dipperprodnew.canbbkmz75pp.ap-south-1.rds.amazonaws.com -U ec2-user -d gps_development_postgres -t trucks > trucks.sql 
+- restore: psql -U postgres -d gps_development_postgres < trucks.sql
+#########################################################
+
+7: CURL commands:
+curl -i -X POST -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/ -d '{ "name": "dipper-connector", "config": { "connector.class": "io.debezium.connector.mysql.MySqlConnector", "tasks.max": "1", "database.hostname": "35.154.141.143", "database.port": "3306", "database.user": "kafka_connect", "database.password": "debezium_etl", "database.server.id": "184054", "database.server.name": "dbserver1", "database.whitelist": "dipper_development", "table.whitelist":"dipper_development.users,dipper_development.shippers,dipper_development.truckers,dipper_development.consigners,dipper_development.drivers,dipper_development.trucks,dipper_development.consigner_trips,dipper_development.route_pois,dipper_development.trip_configs,dipper_development.alert_subscriptions,dipper_development.poi_configs,dipper_development.default_poi_configs", "database.history.kafka.bootstrap.servers": "kafka:9092", "database.history.kafka.topic": "dbhistory.dipper_development", "event.deserialization.failure.handling.mode": "ignore", "inconsistent.schema.handling.mode": "ignore", "snapshot.mode": "initial"}}'
+
+echo "CONNECTOR EXISTS! PUT COMMAND!"
+curl -i -X PUT -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/dipper-connector/config -d  '{ "connector.class": "io.debezium.connector.mysql.MySqlConnector", "tasks.max": "1", "database.hostname": "35.154.141.143", "database.port": "3306", "database.user": "kafka_connect", "database.password": "debezium_etl", "database.server.id": "184054", "database.server.name": "dbserver1", "database.whitelist": "dipper_development", "table.whitelist":"dipper_development.users,dipper_development.shippers,dipper_development.truckers,dipper_development.consigners,dipper_development.drivers,dipper_development.trucks,dipper_development.consigner_trips,dipper_development.route_pois,dipper_development.trip_configs,dipper_development.alert_subscriptions,dipper_development.poi_configs,dipper_development.default_poi_configs", "database.history.kafka.bootstrap.servers": "172.27.0.4:9092", "database.history.kafka.topic": "dbhistory.dipper_development", "event.deserialization.failure.handling.mode": "ignore", "inconsistent.schema.handling.mode": "ignore", "snapshot.mode": "schema_only"}'
+#########################################################
+
+8: KILL MYSQL QUERIES FOR MORE THAN 30 SECS: 
+pt-kill --busy-time 30 --print -u root -p "" --match-command Query --victims all --kill-query
+#########################################################

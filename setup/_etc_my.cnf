@@ -1,0 +1,25 @@
+[mysqld]
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+# Settings user and group are ignored when systemd is used.
+# If you need to run mysqld under a different user or group,
+# customize your systemd unit file for mysqld according to the
+# instructions in http://fedoraproject.org/wiki/Systemd
+innodb_buffer_pool_size = 6G
+max_connections = 800
+
+# FOR REPLICATION, DON'T TOUCH ME PLEASE!
+server-id         = 184054
+# ABOVE SERVER ID PASSED IN CURL COMMAND, AS DB SERVER ID 
+log_bin           = mysql-bin
+binlog_format     = row
+#binlog_row_image  = full
+expire_logs_days  = 10
+
+[mysqld_safe]
+log-error=/var/log/mysqld.log
+log_slow_queries  = /var/log/mysql-slow.log
+pid-file=/var/run/mysqld/mysqld.pid
+

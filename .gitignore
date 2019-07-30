@@ -1,0 +1,14 @@
+dump/*.sql
+db/schema.rb
+
+*.swp
+*.out 
+*.log 
+*.yml
+.keep
+.vscode
+nohup.out
+.DS_Store
+.ruby-gemset
+.ruby-version
+.byebug_history

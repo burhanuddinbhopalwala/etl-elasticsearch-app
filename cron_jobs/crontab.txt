@@ -1,0 +1,18 @@
+# FORCE RESTART ETL IN EVERY 3 HOURS
+* */3 * * * /bin/bash -l -c "/home/ubuntu/burhanuddin_etl_and_elasticsearch_project/cron_jobs/reset_etl.sh"
+
+# TRACK PROCESS AND START ON REBOOT, CHECK IN EVERY 5 MINS
+*/5 * * * * /bin/bash -l -c "/home/ubuntu/burhanuddin_etl_and_elasticsearch_project/cron_jobs/track_process.pl"
+
+# CURL COMMAND TRACK, CHECK IN EVERY 10 MINS
+*/10 * * * * /bin/bash -l -c "/home/ubuntu/burhanuddin_etl_and_elasticsearch_project/cron_jobs/reset_curl_command.sh"
+
+# CHECK FOR ZOMBIE PROCESS AND DESTROY THEM IN EVERY 15 MINS
+#*/15 * * * * /usr/bin/ruby /home/ubuntu/burhanuddin_etl_and_elasticsearch_project/cron_jobs/kill_zombies.rb
+
+# NULL DOCKER LOGS AT 1AM AND KAFKA AND ZOOKEEPER LOGS AT 1:30 AM EVERYDAY
+0 1 * * *  sudo find /var/lib/docker/volumes/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null
+30 1 * * *  sudo find /vol/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null
+
+# NULL ETL AND ELASTICSEARCH_ETL LOGS, EVERY FRIDAY AT 2:00 AM
+# 0 2 * * 6  sudo find ~/burhanuddin_etl_and_elasticsearch_project/logs/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null

@@ -1,0 +1,205 @@
+version: '2'
+services:
+  zookeeper:
+    hostname: zookeeper
+    container_name: zookeeper
+    image: debezium/zookeeper:0.9
+    ports:
+      - 2181:2181
+    restart: on-failure
+    mem_limit: 1g
+    environment:
+      - ZOOKEEPER_TICK_TIME:2000
+      - ZOOKEEPER_CLIENT_PORT:2181
+    volumes:
+      - /vol/zookeeper/data:/zookeeper/data 
+      - /vol/zookeeper/txns:/zookeeper/txns
+
+  kafka:
+    hostname: kafka
+    container_name: kafka
+    image: debezium/kafka:0.9
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    restart: on-failure
+    mem_limit: 1536m
+    environment:
+      - BROKER_ID=1
+      - KAFKA_NUM_PARTITIONS=1
+      - KAFKA_LOG_RETENTION_HOURS=72 
+      - KAFKA_LOG_CLEANUP_POLICY=compact
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS=6000
+      - KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS=300000
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+    volumes:
+      - /vol/kafka/data:/kafka/data
+      - /vol/kafka/logs:/kafka/logs
+
+  kafka-manager:
+    hostname: kafka-manager
+    container_name: kafka-manager
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    links:
+      - zookeeper
+    mem_limit: 512m
+    environment:
+      - ZK_HOSTS=zookeeper:2181
+      - APPLICATION_SECRET=letmein
+    
+  kafka-connect:
+    hostname: kafka-connect
+    container_name: kafka-connect
+    image: debezium/connect:0.9
+    ports:
+      - 8083:8083
+    links:
+      - kafka
+    restart: on-failure
+    mem_limit: 3g
+    environment:
+      - GROUP_ID=1
+      - REST_PORT=8083
+      - ADVERTISED_PORT=8083
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - REST_HOST_NAME=kafka-connect
+      - ADVERTISED_HOST_NAME=kafka-connect
+      - SHUTDOWN_TIMEOUT=10000
+      - OFFSET_FLUSH_TIMEOUT_MS=5000
+      - OFFSET_FLUSH_INTERVAL_MS=60000
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      - INTERNAL_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+############################################################################
+
+version: '2'
+services:
+  zookeeper:
+    hostname: zookeeper
+    container_name: zookeeper
+    image: debezium/zookeeper:0.9
+    ports:
+      - 2181:2181
+    restart: on-failure
+    mem_limit: 1g
+    environment:
+      - ZOOKEEPER_TICK_TIME:2000
+      - ZOOKEEPER_CLIENT_PORT:2181
+    volumes: 
+      -  /vol/zookeeper/data:/zookeeper/data 
+      -  /vol/zookeeper/txns:/zookeeper/txns
+
+  kafka:
+    hostname: kafka
+    container_name: kafka
+    image: debezium/kafka:0.9
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    restart: on-failure
+    mem_limit: 1g
+    environment:  
+      - BROKER_ID=1
+      - KAFKA_NUM_PARTITIONS=10
+      - KAFKA_LOG_RETENTION_HOURS=72 
+      - KAFKA_LOG_CLEANUP_POLICY=compact
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=1
+      - KAFKA_GROUP_MIN_SESSION_TIMEOUT_MS=6000
+      - KAFKA_GROUP_MAX_SESSION_TIMEOUT_MS=2000000
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092  
+    volumes:
+      - /vol/kafka/data:/kafka/data
+      - /vol/kafka/logs:/kafka/logs
+
+  kafka-manager:
+    hostname: kafka-manager
+    container_name: kafka-manager
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    links:
+      - zookeeper
+    restart: on-failure
+    mem_limit: 256m
+    environment:
+      - ZK_HOSTS=zookeeper:2181
+      - APPLICATION_SECRET=letmein
+  
+  # schema-registry:
+  #   hostname: schema-registry
+  #   container_name: schema-registry
+  #   image: confluentinc/cp-schema-registry
+  #   ports:
+  #     - 8181:8181
+  #     - 8081:8081
+  #   links:
+  #     - zookeeper
+  #   restart: on-failure
+  #   mem_limit: 512m
+  #   environment:
+  #     - SCHEMA_REGISTRY_HOST_NAME=schema-registry
+  #     #- SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_ORIGIN='*'
+  #     - SCHEMA_REGISTRY_LISTENERS=http://schema-registry:8081
+  #     - SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL=zookeeper:2181
+  #     #- SCHEMA_REGISTRY_ACCESS_CONTROL_ALLOW_METHODS='GET,POST,PUT,OPTIONS'
+    
+  kafka-connect:
+    hostname: kafka-connect
+    container_name: kafka-connect
+    image: debezium/connect:0.9
+    ports:
+      - 8083:8083
+    links:
+      - kafka
+      #- schema-registry
+    restart: on-failure
+    mem_limit: 1g
+    environment:
+      - GROUP_ID=1
+      - REST_PORT=8083
+      - ADVERTISED_PORT=8083
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - REST_HOST_NAME=kafka-connect
+      - ADVERTISED_HOST_NAME=kafka-connect
+      - SHUTDOWN_TIMEOUT=10000
+      - OFFSET_FLUSH_TIMEOUT_MS=120000
+      - OFFSET_FLUSH_INTERVAL_MS=500
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      ##- KAFKA_HEAP_OPTS: -Xmx5G -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/kafka/dump
+      ##- REST_ADVERTISED_HOST_NAME: kafka_connect
+      ##- ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      ##- CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      ##- OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      ##- STATUS_STORAGE_REPLICATION_FACTOR: 1
+      ##- STATUS_STORAGE_TOPIC=my_connect_statuses
+      ##- KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      ##- VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'http://schema-registry:8081'
+      ##- CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL=http://schema-registry:8081
+      ##- CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL=http://schema-registry:8081
+      #- KEY_CONVERTER=io.confluent.connect.avro.AvroConverter
+      #- VALUE_CONVERTER=io.confluent.connect.avro.AvroConverter
+      #- INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+      #- INTERNAL_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+    volumes:
+      - /vol/kafka-connect/dump:/kafka/dump
+
+  # ruby:
+  #   container_name: etl_consumers 
+  #   image: ruby:latest
+  #   command: bash -c 'gem install mysql2 && gem install logger && gem install byebug && gem install ruby-kafka && gem install require_all && gem install activerecord && gem install elasticsearch && gem install standalone_migrations && ruby etl_main.rb'
+  #   working_dir: /home/ubuntu/burhanuddin_etl_and_elasticsearch_project/
+  #   volumes:
+  #     - ./:/home/ubuntu/burhanuddin_etl_and_elasticsearch_project/

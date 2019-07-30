@@ -1,0 +1,58 @@
+version: "2"
+services:
+  zookeeper:
+    hostname: zookeeper
+    container_name: zookeeper
+    image: debezium/zookeeper:0.9
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    restart: on-failure
+    volumes:
+      - /vol/zookeeper/data:/zookeeper/data
+      - /vol/zookeeper/txns:/zookeeper/txns
+
+  kafka:
+    hostname: kafka
+    container_name: kafka
+    image: debezium/kafka:0.9
+    ports:
+      - 9092:9092
+    links:
+      - zookeeper
+    restart: on-failure
+    environment:
+      - ZOOKEEPER_CONNECT=zookeeper:2181
+    volumes:
+      - /vol/kafka/data:/kafka/data
+      - /vol/kafka/logs:/kafka/logs
+
+  kafka-manager:
+    hostname: kafka-manager
+    container_name: kafka-manager
+    image: sheepkiller/kafka-manager
+    ports:
+      - 9000:9000
+    links:
+      - zookeeper
+    mem_limit: 512m
+    environment:
+      - ZK_HOSTS=zookeeper:2181
+      - APPLICATION_SECRET=letmein
+
+  kafka-connect:
+    hostname: kafka-connect
+    container_name: kafka-connect
+    image: debezium/connect:0.9
+    ports:
+      - 8083:8083
+    links:
+      - kafka
+    restart: on-failure
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=1
+      - CONFIG_STORAGE_TOPIC=my_connect_configs
+      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+      - STATUS_STORAGE_TOPIC=my_connect_statuses

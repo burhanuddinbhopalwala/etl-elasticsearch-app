@@ -1,0 +1,69 @@
+0: MAIN REF: https://debezium.io/
+1: REF: https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/nginx/oss/install_language_runtime.html
++ https://www.techcareerbooster.com/blog/use-activerecord-in-your-ruby-project 
+2: rvm list
+3: rvm install ruby-x.x.x (stable + recent version)
+4: rvm use ruby-x.x.x --default
+5: rvm uninstall ruby-y.y.y (remove unnecessary versions)
+6: rvm use ruby-x.x.x@burhanuddin_etl_and_elasticsearch_project --create 
+7: gem install bundler 
+
+8: git clone https://github.com/burhanuddinbhopalwala/etl_and_elasticsearch_app.git burhanuddin_etl_and_elasticsearch_project/
+9: cd ~/burhanuddin_etl_and_elasticsearch_project && echo "2.x.x" > .ruby-version && echo "burhanuddin_etl_and_elasticsearch_project" > .ruby-gemset
+
+10: 
+>>>>>>>>>>>>>>>>>>mySQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+FOR mySQL UNINSTALL:
+sudo apt-get remove --purge mysql*
+sudo apt-get autoremove
+sudo apt-get autoclean
+
+FOR mySQL INSTALL:
+mySQL: Make sure to install mySQL from here: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
++ sudo apt-get install libmysqlclient-dev
+>>>>>>>>>OR SIMPLY>>>>>>>>>>>
+sudo apt-get update
+sudo apt-get install mysql-server
+sudo mysql_secure_installation
+sudo apt-get install libmysqlclient-dev
+NOTE: SELECT DEFAULT TO 'N' (FOR VALIDITY PASSWORD FIRST CHOICE) && REST CHOICES TO 'Y' 
+https://askubuntu.com/questions/766334/cant-login-as-mysql-user-root-from-normal-user-account-in-ubuntu-16-04
++++++++++++++++++++++++THEN+++++++++++++++++++++
+ubuntu@ip-172-31-29-177:~$ sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf 
+ubuntu@ip-172-31-29-177:~$ sudo service mysql restart
+
+>>>>>>>>>>>>>>>>>>>>postgreSQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+PostgreSQL INSTALL: https://wiki.postgresql.org/wiki/YUM_Installation
+yum list postgresql*
+yum install postgresql96-server
+
+sudo service postgresql-9.6 initdb
+sudo chkconfig postgresql96 on
+sudo service postgresql96 start
+sudo yum erase postgresql96*
+
+-- Default postgres with password postgres set below:
+sudo su - postgres + psql  -- Root login
+CREATE DATABASE <yourdbname>; 
+ALTER USER postgres PASSWORD "postgres";
+-- If want to create else skip below step:
+CREATE USER youruser WITH ENCRYPTED PASSWORD "<yourpass>"; 
+GRANT ALL PRIVILEGES ON DATABASE <yourdbname> TO postgres;
+
+sudo find / -type f -name "pg_hba.conf"
+OR psql -U postgres -c 'SHOW config_file'
+
+sudo vim /var/lib/pgsql96/data/pg_hba.conf
+change IPV4 connection from "peer" to "md5" 
+# REF: http://www.ing.iac.es/~docs/external/postgres/html/auth-methods.html
+
+psql -U postgres -d <db_name>  -- For login with pwd postgres
+-- + https://stackoverflow.com/questions/13086073/rails-install-pg-cant-find-the-libpq-fe-h-header/13086562
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+11: bundle version
+12: bundle install (after making the Gemfile) 
+13: Install docker: https://docs.docker.com/install/linux/docker-ce/ubuntu/
+14: Install docker-compose: https://linuxize.com/post/how-to-install-and-use-docker-compose-on-ubuntu-18-04/ 
++ https://docs.docker.com/compose/install/
+15: Perl script process table: https://www.howtoinstall.co/en/ubuntu/utopic/libproc-processtable-perl
