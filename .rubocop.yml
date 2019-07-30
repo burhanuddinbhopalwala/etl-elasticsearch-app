@@ -1,0 +1,57 @@
+Metrics/AbcSize:
+    Max: 150 #* 15 default
+
+Metrics/CyclomaticComplexity:
+    Max: 50
+
+Metrics/PerceivedComplexity:
+    Max: 50
+
+Metrics/LineLength:
+    Max: 120
+    AllowHeredoc: true
+    AllowURI: true
+    URISchemes:
+        - http
+        - https
+    IgnoreCopDirectives: false
+    IgnoredPatterns:
+        - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
+
+Metrics/BlockLength:
+    Max: 100 #* 25 default
+
+Metrics/MethodLength:
+    Max: 100
+
+Style/Documentation:
+    Enabled: false
+
+Style/StringLiterals:
+    EnforcedStyle: double_quotes
+    SupportedStyles:
+        - single_quotes
+        - double_quotes
+
+Layout/Tab:
+    Enabled: true
+
+Layout/TrailingWhitespace:
+    Enabled: true
+
+Layout/IndentationWidth:
+    Width: 2
+
+Layout/MultilineMethodCallIndentation:
+    EnforcedStyle: indented
+    SupportedStyles:
+        - aligned
+        - indented
+        - indented_relative_to_receiver
+    IndentationWidth: 2
+
+Layout/LeadingCommentSpace:
+    Enabled: false
+
+Layout/EndOfLine:
+    Enabled: false

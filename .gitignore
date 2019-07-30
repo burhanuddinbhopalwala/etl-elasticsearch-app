@@ -1,10 +1,10 @@
 dump/*.sql
 db/schema.rb
+config/*.yml
 
 *.swp
 *.out 
 *.log 
-*.yml
 .keep
 .vscode
 nohup.out
