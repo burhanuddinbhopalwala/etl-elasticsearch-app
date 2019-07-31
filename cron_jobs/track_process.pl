@@ -144,7 +144,7 @@ sub restartingETL() {
   print("\n Trying restarting all dockers at: ", "".localtime(time));
   system("cd ~/burhanuddin_etl_and_elasticsearch_project && sudo docker-compose up -d");
   print("\n Restarted all the dockers at: ", "".localtime(time));
-  system("sleep 1m");
+  system("sleep 2m");
   
   #* 4: DEBEZIUM CURL COMMAND
   system("./reset_curl_command.sh");

@@ -15,4 +15,4 @@
 30 1 * * *  sudo find /vol/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null
 
 # NULL ETL AND ELASTICSEARCH_ETL LOGS, EVERY FRIDAY AT 2:00 AM
-# 0 2 * * 6  sudo find ~/burhanuddin_etl_and_elasticsearch_project/logs/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null
+#0 2 * * 6  sudo find ~/burhanuddin_etl_and_elasticsearch_project/logs/ -type f -name "*.log" | awk "{print $1}" | xargs -rn 1 sudo cp /dev/null
