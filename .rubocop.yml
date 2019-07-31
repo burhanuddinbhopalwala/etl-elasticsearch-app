@@ -55,3 +55,6 @@ Layout/LeadingCommentSpace:
 
 Layout/EndOfLine:
     Enabled: false
+
+Security/YAMLLoad:
+    Enabled: false
