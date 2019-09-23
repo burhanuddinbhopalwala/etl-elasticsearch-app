@@ -20,18 +20,20 @@ ALTER TABLE <table_name> DISABLE KEYS;
 #########################################################
 
 4: -- mySQL User creations / Data Control Language (DCL) commands:
-DROP USER "kafka_connect"@"%";
-CREATE USER "kafka_connect"@"%" IDENTIFIED BY "debezium_etl";
-GRANT ALL PRIVILEGES ON *.* TO "kafka_connect"@"%";
-FLUSH PRIVILEGES; -- MUST COMMAND AFTER GRANT/ REVOKE
 SELECT user, host, authentication_string FROM mysql.user;
-REVOKE ALL PRIVILEGES ON <db_name>.* FROM "kafka_connect"@"%";
+CREATE USER "kafka_connect"@"%" IDENTIFIED BY "debezium_etl";
+DROP USER "kafka_connect"@"%";
+GRANT ALL PRIVILEGES ON *.* TO "kafka_connect"@"%" IDENTIFIED BY "debezium_etl"; >>>OR>>>
+GRANT CREATE, ALTER, SELECT, INSERT, UPDATE, DELETE ON *.* TO "kafka_connect"@"%" IDENTIFIED BY "debezium_etl";
+SHOW GRANTS FOR "kafka_connect"@"%";
+REVOKE GRANT OPTION, DROP ON <db_name>.* FROM "kafka_connect"@"%";
+FLUSH PRIVILEGES; -- MUST COMMAND AFTER GRANT/ REVOKE
 /*
   POSSIBLE MOST USEFUL PRIVILEGES: 
     ALL PRIVILEGES- Allows global access
+    DROP- Allows them to them to delete tables or databases
     CREATE- Allows them to create new tables or databases
     ALTER- Allows them to alter tables
-    DROP- Allows them to them to delete tables or databases
     SELECT- Allows read only user
     INSERT- Allows them to insert rows into tables
     UPDATE- Allow them to update table rows

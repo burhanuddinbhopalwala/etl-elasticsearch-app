@@ -16,7 +16,7 @@ def main
   logger = Logger.new(STDOUT)
   #* 1: Making drnection with the replia DB
   ActiveRecord::Base.establish_connection(Connect.load_db_config["replica_db"])
-  ActiveRecord::Base.connection.execute("SET GLOBAL FOREIGN_KEY_CHECKS=0;") #* mySQL
+  ActiveRecord::Base.connection.execute("SET GLOBAL FOREIGN_KEY_CHECKS=0;") rescue nil #* mySQL
 
   #* 2: Kafka consumer, extracting messasges topic wise and updating on the DB
   kafka = Kafka.new(["localhost:9092"])

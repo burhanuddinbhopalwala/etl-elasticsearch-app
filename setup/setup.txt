@@ -14,23 +14,25 @@
 10: 
 >>>>>>>>>>>>>>>>>>mySQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 FOR mySQL UNINSTALL:
-sudo apt-get remove --purge mysql*
-sudo apt-get autoremove
-sudo apt-get autoclean
+sudo apt-get remove --purge --yes mysql*
+sudo apt-get --yes autoremove
+sudo apt-get --yes autoclean
 
 FOR mySQL INSTALL:
 mySQL: Make sure to install mySQL from here: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
-+ sudo apt-get install libmysqlclient-dev
++ sudo apt-get --yes install libmysqlclient-dev
 >>>>>>>>>OR SIMPLY>>>>>>>>>>>
-sudo apt-get update
-sudo apt-get install mysql-server
+sudo apt-get --yes update
+sudo apt-get --yes install mysql-server
 sudo mysql_secure_installation
-sudo apt-get install libmysqlclient-dev
+sudo apt-get --yes install libmysqlclient-dev
 NOTE: SELECT DEFAULT TO 'N' (FOR VALIDITY PASSWORD FIRST CHOICE) && REST CHOICES TO 'Y' 
-https://askubuntu.com/questions/766334/cant-login-as-mysql-user-root-from-normal-user-account-in-ubuntu-16-04
+https://askubuntu.com/questions/766334/cant-logiin-as-mysql-user-root-from-normal-user-account-in-ubuntu-16-04
+sudo apt-get --yes install libmysqlclient-dev
 +++++++++++++++++++++++THEN+++++++++++++++++++++
 ubuntu@ip-172-31-29-177:~$ sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf 
 ubuntu@ip-172-31-29-177:~$ sudo service mysql restart
+ubuntu@ip-172-31-29-177:~$ sudo mysql -u root (ROOT DIRECT LOGIN)
 
 >>>>>>>>>>>>>>>>>>>>postgreSQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 PostgreSQL INSTALL: https://wiki.postgresql.org/wiki/YUM_Installation
