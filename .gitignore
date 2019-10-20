@@ -9,6 +9,4 @@ config/*.yml
 .vscode
 nohup.out
 .DS_Store
-.ruby-gemset
-.ruby-version
 .byebug_history

@@ -1,22 +1,38 @@
-0: MAIN REF: https://debezium.io/
+0: MAIN REF (For Debezium + Docker + Zookeeper + Kafka + Kafka Connect): https://debezium.io/
 1: REF: https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/nginx/oss/install_language_runtime.html
 + https://www.techcareerbooster.com/blog/use-activerecord-in-your-ruby-project 
-2: rvm list
+
+2: >>>>>>>>>>>>>>>>>>>>>>INSTALL rvm + gem + bundler:>>>>>>>>>>>>>>>>>>>>
+    sudo yum install -y curl gpg gcc gcc-c++ make
+    sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+    
+    curl -sSL https://get.rvm.io | sudo bash -s stable
+    sudo usermod -a -G rvm `whoami`
+    
+    if sudo grep -q secure_path /etc/sudoers; then sudo sh -c "echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh" && echo Environment variable installed; fi
+    
+    # LOGUT -> LOGIN 
+    rvm list + vi ~/.rvmrc + rvm_silence_path_mismatch_check_flag=1
+    gem install bundler
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
 3: rvm install ruby-x.x.x (stable + recent version)
-4: rvm use ruby-x.x.x --default
+4: rvm use --default ruby-x.x.x 
 5: rvm uninstall ruby-y.y.y (remove unnecessary versions)
-6: rvm use ruby-x.x.x@burhanuddin_etl_and_elasticsearch_project --create 
-7: gem install bundler 
 
-8: git clone https://github.com/burhanuddinbhopalwala/etl_and_elasticsearch_app.git burhanuddin_etl_and_elasticsearch_project/
-9: cd ~/burhanuddin_etl_and_elasticsearch_project && echo "2.x.x" > .ruby-version && echo "burhanuddin_etl_and_elasticsearch_project" > .ruby-gemset
+6: git clone https://github.com/burhanuddinbhopalwala/etl-elasticsearch-app.git 
+cd etl-elasticsearch-app/
 
-10: 
->>>>>>>>>>>>>>>>>>mySQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+7: rvm use ruby-2.6.1@etl-elasticsearch-app-gemset --create 
+8: echo "2.6.1" > .ruby-version 
+echo "etl-elasticsearch-app-gemset" > .ruby-gemset
+9: cd.. ; cd etl-elasticsearch-app/ ; bundler install 
+
+10: >>>>>>>>>>>>>>>>>>mySQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 FOR mySQL UNINSTALL:
 sudo apt-get remove --purge --yes mysql*
-sudo apt-get --yes autoremove
-sudo apt-get --yes autoclean
+sudo apt-get autoremove --yes
+sudo apt-get autoclean --yes
 
 FOR mySQL INSTALL:
 mySQL: Make sure to install mySQL from here: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04
