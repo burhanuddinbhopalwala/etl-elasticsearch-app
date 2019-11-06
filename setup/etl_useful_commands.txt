@@ -49,7 +49,7 @@ https://dev.mysql.com/doc/refman/8.0/en/revoke.html
 
 5: -- MySQL dump and restore
 - dump: mysqldump --no-data -h 35.154.141.143 -u kafka_connect -p dipper_development users shippers consigners trucks truckers drivers consigner_trips route_pois poi_configs trip_configs alert_subscriptions default_poi_configs > schema.sql
-- restore: mysqldump -h 35.154.141.143 -u kafka_connect -p dipper_development users shippers consigners trucks truckers drivers consigner_trips route_pois poi_configs trip_configs alert_subscriptions default_poi_configs > data.sql
+- restore: mysql -u kafka_connect -p -D dipper_development --force < schema.sql
 #########################################################
 
 6: PostgreSQL dump and restore
