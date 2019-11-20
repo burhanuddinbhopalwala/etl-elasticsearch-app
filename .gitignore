@@ -1,12 +1,17 @@
+.vscode/
 dump/*.sql
+logs/*.log
 db/schema.rb
-config/*.yml
+config/*.yaml
 
+*.swo
 *.swp
 *.out 
 *.log 
 .keep
-.vscode
+*.lock
+*.yaml
 nohup.out
 .DS_Store
 .byebug_history
+Gemfile.lock
