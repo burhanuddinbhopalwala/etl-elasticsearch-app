@@ -70,7 +70,7 @@ GEM
       method_source
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
-    rake (12.3.2)
+    rake (13.0.1)
     require_all (2.0.0)
     ruby-kafka (0.7.5)
       digest-crc
