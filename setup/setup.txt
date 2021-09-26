@@ -74,6 +74,7 @@ OR psql -U postgres -c 'SHOW config_file'
 sudo vim /var/lib/pgsql96/data/pg_hba.conf
 change IPV4 connection from "peer" to "md5" 
 # REF: http://www.ing.iac.es/~docs/external/postgres/html/auth-methods.html
+# MUST REMOTE CONNECTION REF: https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html
 
 psql -U postgres -d <db_name>  -- For login with pwd postgres
 -- + https://stackoverflow.com/questions/13086073/rails-install-pg-cant-find-the-libpq-fe-h-header/13086562
