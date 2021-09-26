@@ -1,46 +1,37 @@
-Metrics/AbcSize:
-    Max: 150 #* 15 default
-
-Metrics/CyclomaticComplexity:
-    Max: 50
-
-Metrics/PerceivedComplexity:
-    Max: 50
-
-Metrics/LineLength:
-    Max: 120
-    AllowHeredoc: true
-    AllowURI: true
-    URISchemes:
-        - http
-        - https
-    IgnoreCopDirectives: false
-    IgnoredPatterns:
-        - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
-
-Metrics/BlockLength:
-    Max: 100 #* 25 default
-
-Metrics/MethodLength:
-    Max: 100
-
-Style/Documentation:
-    Enabled: false
-
-Style/StringLiterals:
-    EnforcedStyle: double_quotes
-    SupportedStyles:
-        - single_quotes
-        - double_quotes
+AllCops:
+    NewCops: disable
+    Exclude:
+        - "tmp/**/*"
+        - "vendor/**/*"
+        - "db/schema.rb"
+        - "lib/tasks/**/*"
+        - "db/migrate/**/*"
+        - "spec/fixtures/**/*"
+    TargetRubyVersion: 2.5.0
+    SuggestExtensions: false
 
 Layout/Tab:
     Enabled: true
 
-Layout/TrailingWhitespace:
-    Enabled: true
+Layout/EndOfLine:
+    Enabled: false
+
+Layout/LineLength:
+    Max: 80
 
 Layout/IndentationWidth:
     Width: 2
+
+Layout/TrailingWhitespace:
+    Enabled: true
+
+Layout/LeadingCommentSpace:
+    Enabled: false
+
+Lint/UnderscorePrefixedVariableName:
+    Enabled: false
+    Layout/IndentationStyle:
+        Enabled: true
 
 Layout/MultilineMethodCallIndentation:
     EnforcedStyle: indented
@@ -50,11 +41,52 @@ Layout/MultilineMethodCallIndentation:
         - indented_relative_to_receiver
     IndentationWidth: 2
 
-Layout/LeadingCommentSpace:
+Metrics/LineLength:
+    Max: 80
+    AllowHeredoc: true
+    AllowURI: true
+    URISchemes:
+        - http
+        - https
+    IgnoreCopDirectives: false
+    IgnoredPatterns:
+        - '\A\s*(remote_)?test(_\w+)?\s.*(do|->)(\s|\Z)'
+
+Metrics/AbcSize:
+    Max: 15
+
+Metrics/BlockLength:
+    Max: 25
+
+Metrics/ClassLength:
+    Max: 150
+
+Metrics/MethodLength:
+    Max: 100
+
+Metrics/CyclomaticComplexity:
+    Max: 50
+
+Metrics/PerceivedComplexity:
+    Max: 50
+
+Style/GlobalVars:
     Enabled: false
 
-Layout/EndOfLine:
+Style/Documentation:
     Enabled: false
+
+Style/GuardClause:
+    Enabled: false
+
+Style/FrozenStringLiteralComment:
+    Enabled: true
+
+Style/StringLiterals:
+    EnforcedStyle: single_quotes
+    SupportedStyles:
+        - single_quotes
+        - double_quotes
 
 Security/YAMLLoad:
     Enabled: false

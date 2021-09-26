@@ -1,0 +1,72 @@
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# SQL
+[*.sql]
+indent_size = 2
+indent_style = space
+max_line_length = 80
+
+# Perl
+[*.pl]
+indent_size = 4
+indent_style = space
+max_line_length = 80
+
+# Python
+[*.py]
+indent_size = 4
+indent_style = space
+max_line_length = 120
+
+# Ruby
+[*.rb]
+indent_size = 2
+indent_style = space
+max_line_length = 80
+
+# PHP
+[*.php]
+indent_size = 4
+indent_style = space
+max_line_length = 120
+
+# Java
+[*.java]
+indent_size = 4
+indent_style = space
+max_line_length = 80
+
+# JavaScript
+[*.js]
+indent_size = 4
+indent_style = space
+max_line_length = 80
+
+# Go
+[*.go]
+indent_size = 4
+indent_style = tab
+max_line_length = 120
+
+# Cosmic config files
+[*.{json,jsonc,json5,yml,yaml,toml,xml}]
+indent_size = 2
+indent_style = space
+
+# Makefile
+[Makefile]
+indent_size = 4
+indent_style = tab
+
+# Markdown files
+[*.{diff,md}]
+trim_trailing_whitespace = false
