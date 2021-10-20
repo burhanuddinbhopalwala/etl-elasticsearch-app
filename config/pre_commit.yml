@@ -1,0 +1,11 @@
+---
+:warnings_remove: []
+:warnings_add:
+  - :tabs
+  - :jshint
+:checks_add: []
+:checks_remove:
+  - :jshint
+  - :execjs
+# pre-commit disable yaml checks   jshint
+# pre-commit enable  yaml warnings jshint

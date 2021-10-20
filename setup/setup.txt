@@ -1,32 +1,32 @@
 0: MAIN REF (For Debezium + Docker + Zookeeper + Kafka + Kafka Connect): https://debezium.io/
 1: REF: https://www.phusionpassenger.com/library/walkthroughs/deploy/ruby/ownserver/nginx/oss/install_language_runtime.html
-+ https://www.techcareerbooster.com/blog/use-activerecord-in-your-ruby-project 
++ https://www.techcareerbooster.com/blog/use-activerecord-in-your-ruby-project
 
 2: >>>>>>>>>>>>>>>>>>>>>>INSTALL rvm + gem + bundler:>>>>>>>>>>>>>>>>>>>>
     sudo yum install -y curl gpg gcc gcc-c++ make
     sudo gpg2 --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-    
+
     curl -sSL https://get.rvm.io | sudo bash -s stable
     sudo usermod -a -G rvm `whoami`
-    
+
     if sudo grep -q secure_path /etc/sudoers; then sudo sh -c "echo export rvmsudo_secure_path=1 >> /etc/profile.d/rvm_secure_path.sh" && echo Environment variable installed; fi
-    
-    # LOGUT -> LOGIN 
+
+    # LOGOUT -> LOGIN
     rvm list + vi ~/.rvmrc + rvm_silence_path_mismatch_check_flag=1
     gem install bundler
 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 3: rvm install ruby-x.x.x (stable + recent version)
-4: rvm use --default ruby-x.x.x 
+4: rvm use --default ruby-x.x.x
 5: rvm uninstall ruby-y.y.y (remove unnecessary versions)
 
-6: git clone https://github.com/burhanuddinbhopalwala/etl-elasticsearch-app.git 
+6: git clone https://github.com/burhanuddinbhopalwala/etl-elasticsearch-app.git
 cd etl-elasticsearch-app/
 
-7: rvm use ruby-2.6.1@etl-elasticsearch-app-gemset --create 
-8: echo "2.6.1" > .ruby-version 
+7: rvm use ruby-2.6.1@etl-elasticsearch-app-gemset --create
+8: echo "2.6.1" > .ruby-version
 echo "etl-elasticsearch-app-gemset" > .ruby-gemset
-9: cd.. ; cd etl-elasticsearch-app/ ; bundler install 
+9: cd.. ; cd etl-elasticsearch-app/ ; bundler install
 
 10: >>>>>>>>>>>>>>>>>>mySQL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 FOR mySQL UNINSTALL:
@@ -42,11 +42,11 @@ sudo apt-get --yes update
 sudo apt-get --yes install mysql-server
 sudo mysql_secure_installation
 sudo apt-get --yes install libmysqlclient-dev
-NOTE: SELECT DEFAULT TO 'N' (FOR VALIDITY PASSWORD FIRST CHOICE) && REST CHOICES TO 'Y' 
+NOTE: SELECT DEFAULT TO 'N' (FOR VALIDITY PASSWORD FIRST CHOICE) && REST CHOICES TO 'Y'
 https://askubuntu.com/questions/766334/cant-logiin-as-mysql-user-root-from-normal-user-account-in-ubuntu-16-04
 sudo apt-get --yes install libmysqlclient-dev
 +++++++++++++++++++++++THEN+++++++++++++++++++++
-ubuntu@ip-172-31-29-177:~$ sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf 
+ubuntu@ip-172-31-29-177:~$ sudo vi /etc/mysql/mysql.conf.d/mysqld.cnf
 ubuntu@ip-172-31-29-177:~$ sudo service mysql restart
 ubuntu@ip-172-31-29-177:~$ sudo mysql -u root (ROOT DIRECT LOGIN)
 
@@ -62,17 +62,17 @@ sudo yum erase postgresql96*
 
 -- Default postgres with password postgres set below:
 sudo su - postgres + psql  -- Root login
-CREATE DATABASE <yourdbname>; 
+CREATE DATABASE <yourdbname>;
 ALTER USER postgres PASSWORD "postgres";
 -- If want to create else skip below step:
-CREATE USER youruser WITH ENCRYPTED PASSWORD "<yourpass>"; 
+CREATE USER youruser WITH ENCRYPTED PASSWORD "<yourpass>";
 GRANT ALL PRIVILEGES ON DATABASE <yourdbname> TO postgres;
 
 sudo find / -type f -name "pg_hba.conf"
 OR psql -U postgres -c 'SHOW config_file'
 
 sudo vim /var/lib/pgsql96/data/pg_hba.conf
-change IPV4 connection from "peer" to "md5" 
+change IPV4 connection from "peer" to "md5"
 # REF: http://www.ing.iac.es/~docs/external/postgres/html/auth-methods.html
 # MUST REMOTE CONNECTION REF: https://blog.bigbinary.com/2016/01/23/configure-postgresql-to-allow-remote-connection.html
 
@@ -81,8 +81,8 @@ psql -U postgres -d <db_name>  -- For login with pwd postgres
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 11: bundle version
-12: bundle install (after making the Gemfile) 
+12: bundle install (after making the Gemfile)
 13: Install docker: https://docs.docker.com/install/linux/docker-ce/ubuntu/
-14: Install docker-compose: https://linuxize.com/post/how-to-install-and-use-docker-compose-on-ubuntu-18-04/ 
+14: Install docker-compose: https://linuxize.com/post/how-to-install-and-use-docker-compose-on-ubuntu-18-04/
 + https://docs.docker.com/compose/install/
 15: Perl script process table: https://www.howtoinstall.co/en/ubuntu/utopic/libproc-processtable-perl

@@ -10,14 +10,14 @@ AllCops:
     TargetRubyVersion: 2.5.0
     SuggestExtensions: false
 
-Layout/Tab:
-    Enabled: true
-
 Layout/EndOfLine:
     Enabled: false
 
 Layout/LineLength:
     Max: 80
+
+Layout/IndentationStyle:
+    Enabled: true
 
 Layout/IndentationWidth:
     Width: 2

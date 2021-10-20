@@ -3,7 +3,7 @@
 require("kafka")
 require("mysql2")
 require("logger")
-require("byebug")
+ require("byebug")
 require("active_record")
 require("standalone_migrations")
 require_relative("./replicate.rb")
