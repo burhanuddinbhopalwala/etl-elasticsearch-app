@@ -42,6 +42,7 @@ GEM
       faraday (~> 1)
       multi_json
     erubi (1.10.0)
+    execjs (2.8.1)
     faraday (1.8.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -145,6 +146,7 @@ DEPENDENCIES
   activerecord
   byebug
   elasticsearch
+  execjs
   logger (~> 1.4.2)
   pre-commit
   require_all

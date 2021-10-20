@@ -1,20 +1,22 @@
 # frozen_string_literal: true
 
-require("kafka")
-require("mysql2")
-require("logger")
-require("byebug")
-require("require_all")
-require("active_record")
-require("elasticsearch")
-require("standalone_migrations")
-require_relative("../config/connect.rb")
-require_all("../models/")
+require('kafka')
+require('mysql2')
+require('logger')
+require('byebug')
+require('require_all')
+require('active_record')
+require('elasticsearch')
+require('standalone_migrations')
+require_relative('../config/connect')
+require_all('../models/')
 
 module Replicate
   def correct_all_datetime_formats(payload_after, _logger)
     payload_after.keys.each do |key|
-      next unless key.include?("date") || key.include?("time") || key.include?("eta") || key.include?("delete")
+      unless key.include?('date') || key.include?('time') || key.include?('eta') || key.include?('delete')
+        next
+      end
       next if payload_after[key].nil?
 
       begin
@@ -33,17 +35,17 @@ module Replicate
     print_table_name = table_name.upcase
     consumer.each_message do |message|
       message = JSON.parse(message.value)
-      next if message["payload"].nil?
+      next if message['payload'].nil?
 
-      master_operation = message["payload"]["op"]
-      payload_before = message["payload"]["before"]
-      payload_after = message["payload"]["after"]
+      master_operation = message['payload']['op']
+      payload_before = message['payload']['before']
+      payload_after = message['payload']['after']
       unless payload_after.nil?
         correct_all_datetime_formats(payload_after, logger)
-        payload_after.delete("created_at")
-        payload_after.delete("updated_at")
+        payload_after.delete('created_at')
+        payload_after.delete('updated_at')
       end
-      if master_operation == "c"
+      if master_operation == 'c'
         ar = model.new(payload_after)
         #* ar: ActiveRecord
         begin
@@ -54,8 +56,8 @@ module Replicate
           logger.error("#{print_table_name} REPLICATION FAILED: BECAUSE #{e.message} FOR ID #{ar.id}")
           next
         end
-      elsif master_operation == "u"
-        ar = model.find_by_id(payload_after["id"])
+      elsif master_operation == 'u'
+        ar = model.find_by_id(payload_after['id'])
         unless ar.present?
           ar = model.new(payload_after)
           begin
@@ -66,7 +68,7 @@ module Replicate
           logger.info("#{print_table_name} NOT FOUND WHILE UPDATING HENCE CREATED FOR MASTER ID: #{payload_after['id']}")
           next
         end
-        payload_after.delete("id")
+        payload_after.delete('id')
         begin
           ar.update!(payload_after)
           logger.info("#{print_table_name} UPDATED FOR ID: #{ar.id}")
@@ -75,8 +77,8 @@ module Replicate
           logger.error("#{print_table_name} REPLICATION FAILED: BECAUSE #{e.message} FOR ID #{ar.id}")
           next
         end
-      elsif master_operation == "d"
-        ar = model.find_by_id(payload_before["id"])
+      elsif master_operation == 'd'
+        ar = model.find_by_id(payload_before['id'])
         unless ar.present?
           logger.info("#{print_table_name} NOT FOUND WHILE DELETION FOR MASTER ID: #{payload_before['id']}")
           next
