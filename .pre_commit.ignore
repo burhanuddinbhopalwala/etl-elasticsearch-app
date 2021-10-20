@@ -1,2 +1,9 @@
 *.sh
 *.txt
+
+*.xml
+*.yml
+*.yaml
+*.json
+*.jsonc
+*.json5
