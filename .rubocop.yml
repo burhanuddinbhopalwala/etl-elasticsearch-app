@@ -9,6 +9,8 @@ AllCops:
         - "spec/fixtures/**/*"
     TargetRubyVersion: 2.5.0
     SuggestExtensions: false
+    DisabledByDefault: false
+    StyleGuideBaseURL: https://shopify.github.io/ruby-style-guide/
 
 Layout/EndOfLine:
     Enabled: false
