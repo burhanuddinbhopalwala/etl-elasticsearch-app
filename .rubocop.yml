@@ -1,12 +1,12 @@
 AllCops:
     NewCops: disable
     Exclude:
-        - "tmp/**/*"
-        - "vendor/**/*"
-        - "db/schema.rb"
-        - "lib/tasks/**/*"
-        - "db/migrate/**/*"
-        - "spec/fixtures/**/*"
+        - 'tmp/**/*'
+        - 'vendor/**/*'
+        - 'db/schema.rb'
+        - 'lib/tasks/**/*'
+        - 'db/migrate/**/*'
+        - 'spec/fixtures/**/*'
     TargetRubyVersion: 2.5.0
     SuggestExtensions: false
     DisabledByDefault: false
