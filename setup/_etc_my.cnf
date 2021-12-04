@@ -12,17 +12,17 @@ max_connections = 800
 
 # FOR REPLICATION, DON'T TOUCH ME PLEASE!
 server-id         = 184054
-# ABOVE SERVER ID PASSED IN CURL COMMAND, AS DB SERVER ID 
-log_bin           = mysql-bin
-binlog_format     = row
+# ABOVE SERVER ID PASSED IN CURL COMMAND, AS DB SERVER ID
+log_bin            = mysql-bin
+binlog_format      = row
+expire_logs_days   = 10
 #binlog_row_image  = full
-expire_logs_days  = 10
 # BELOW COMMANDS ONLY FOR mySQL 5.6.5 ONWARDS...
 # gtid_mode                 = on
 # enforce_gtid_consistency  = on
 
 [mysqld_safe]
-log-error=/var/log/mysqld.log
+log-error         =/var/log/mysqld.log
 log_slow_queries  = /var/log/mysql-slow.log
-pid-file=/var/run/mysqld/mysqld.pid
+pid-file          =/var/run/mysqld/mysqld.pid
 

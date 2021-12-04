@@ -16,7 +16,7 @@
   "ruby.rubocop.onSave": true,
   "ruby.rubocop.useBundler": true,
   "ruby.rubocop.suppressRubocopWarnings": true,
-  "ruby.rubocop.configFilePath": "./.rubocop.yml",
+  // "ruby.rubocop.configFilePath": "./.rubocop.yml",
   // "ruby.rubocop.executePath": "~/.rvm/gems/ruby-2.6.1@etl-elasticsearch-app-gemset/wrappers/",
   "[ruby]": {
     "editor.formatOnSave": true,

@@ -1,15 +1,15 @@
-1: For mySQL:
-SET  FOREIGN_KEY_CHECKS=0; 
+1: For mySQL Replication Settings:
+SET  FOREIGN_KEY_CHECKS=0;
 SET GLOBAL FOREIGN_KEY_CHECKS=0;
 ALTER TABLE <table_name> DISABLE KEYS;
 - https://tableplus.io/blog/2018/08/mysql-how-to-drop-constraint-in-mysql.html
 - https://www.dbrnd.com/2017/02/postgresql-how-to-disable-or-enable-foreign-key-constraint-of-a-table-data-migration-bulk-operation/
 #########################################################
 
-2: Ubuntu commands: 
-  2.1: ps -aux | grep "[.]rb" | awk '{print $2}' | xargs -rn 1 kill -9
+2: Ubuntu commands:
+  2.1: ps -aux | grep '[.]rb' | awk '{print $2}' | xargs -rn 1 kill -9
   2.2: sudo netstat -altunp | grep <service_name_if_any_or_:port#> # For finding the busy ports etc.
-  # -a: all, -l: LISTENING,, -t: TCP, -u: UDP, -n: NUMERIC (IP, PORT, USER NAMES), -p: PROCESS_ID 
+  # -a: all, -l: LISTENING,, -t: TCP, -u: UDP, -n: NUMERIC (IP, PORT, USER NAMES), -p: PROCESS_ID
 #########################################################
 
 3: Docker etl commands:
@@ -29,7 +29,7 @@ SHOW GRANTS FOR "kafka_connect"@"%";
 REVOKE GRANT OPTION, DROP ON <db_name>.* FROM "kafka_connect"@"%";
 FLUSH PRIVILEGES; -- MUST COMMAND AFTER GRANT/ REVOKE
 /*
-  POSSIBLE MOST USEFUL PRIVILEGES: 
+  POSSIBLE MOST USEFUL PRIVILEGES:
     ALL PRIVILEGES- Allows global access
     DROP- Allows them to them to delete tables or databases
     CREATE- Allows them to create new tables or databases
@@ -53,7 +53,7 @@ https://dev.mysql.com/doc/refman/8.0/en/revoke.html
 #########################################################
 
 6: PostgreSQL dump and restore
-- dump: pg_dump --schema-only -h dipperprodnew.canbbkmz75pp.ap-south-1.rds.amazonaws.com -U ec2-user -d gps_development_postgres -t trucks > trucks.sql 
+- dump: pg_dump --schema-only -h dipperprodnew.canbbkmz75pp.ap-south-1.rds.amazonaws.com -U ec2-user -d gps_development_postgres -t trucks > trucks.sql
 - restore: psql -U postgres -d gps_development_postgres < trucks.sql
 #########################################################
 
@@ -64,6 +64,6 @@ echo "CONNECTOR EXISTS! PUT COMMAND!"
 curl -i -X PUT -H "Accept:application/json" -H "Content-Type:application/json" localhost:8083/connectors/dipper-connector/config -d  '{ "connector.class": "io.debezium.connector.mysql.MySqlConnector", "tasks.max": "1", "database.hostname": "35.154.141.143", "database.port": "3306", "database.user": "kafka_connect", "database.password": "debezium_etl", "database.server.id": "184054", "database.server.name": "dbserver1", "database.whitelist": "dipper_development", "table.whitelist":"dipper_development.users,dipper_development.shippers,dipper_development.truckers,dipper_development.consigners,dipper_development.drivers,dipper_development.trucks,dipper_development.consigner_trips,dipper_development.route_pois,dipper_development.trip_configs,dipper_development.alert_subscriptions,dipper_development.poi_configs,dipper_development.default_poi_configs", "database.history.kafka.bootstrap.servers": "172.27.0.4:9092", "database.history.kafka.topic": "dbhistory.dipper_development", "event.deserialization.failure.handling.mode": "ignore", "inconsistent.schema.handling.mode": "ignore", "snapshot.mode": "schema_only"}'
 #########################################################
 
-8: KILL MYSQL QUERIES FOR MORE THAN 30 SECS: 
+8: KILL MYSQL QUERIES FOR MORE THAN 30 SECS:
 pt-kill --busy-time 30 --print -u root -p "" --match-command Query --victims all --kill-query
 #########################################################
