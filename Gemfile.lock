@@ -74,6 +74,8 @@ GEM
     multipart-post (2.1.1)
     nokogiri (1.12.5-x86_64-darwin)
       racc (~> 1.4)
+    nokogiri (1.12.5-x86_64-linux)
+      racc (~> 1.4)
     parallel (1.21.0)
     parser (3.0.3.1)
       ast (~> 2.4.1)
@@ -81,7 +83,7 @@ GEM
     pre-commit (0.39.0)
       pluginator (~> 1.5)
     racc (1.6.0)
-    rack (2.2.3)
+    rack (2.2.3.1)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails-dom-testing (2.0.3)
@@ -140,6 +142,7 @@ GEM
 
 PLATFORMS
   x86_64-darwin-20
+  x86_64-linux
 
 DEPENDENCIES
   activerecord
